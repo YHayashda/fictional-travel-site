@@ -18,7 +18,8 @@ gulp.task('watch', function() {
   });
 });
 
-gulp.task('cssInjection', ['styles'], function() {
+gulp.task('cssInjection', ['styles'] , function() {
   return gulp.src('./app/temp/styles/styles.css')
     .pipe(browserSync.stream());
-});
+}
+);
