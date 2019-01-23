@@ -21,25 +21,25 @@ gulp.task('beginClean', function() {
   return del(['./app/temp/sprite', './app/assets/images/sprites'])
 });
 
-gulp.task('createSprite', ['beginClean'], function() {
+gulp.task('createSprite', gulp.series('beginClean', function() {
   return gulp.src('./app/assets/images/icons/**/*.svg')
     .pipe(svgSprite(config))
-    .pipe(gulp.dest('./app/temp/sprite/'));
-});
+    .pipe(gulp.dest('./app/temp/sprite/'))
+}));
 
-gulp.task('copySpriteGraphic', ['createSprite'], function() {
+gulp.task('copySpriteGraphic', gulp.series('createSprite', function() {
   return gulp.src('./app/temp/sprite/css/**/*.svg')
-    .pipe(gulp.dest('./app/assets/images/sprites'));
-});
+    .pipe(gulp.dest('./app/assets/images/sprites'))
+}));
 
-gulp.task('copySpriteCSS', ['createSprite'], function() {
+gulp.task('copySpriteCSS', gulp.series('createSprite', function() {
   return gulp.src('./app/temp/sprite/css/*.css')
     .pipe(rename('_sprite.css'))
     .pipe(gulp.dest('./app/assets/styles/modules'))
-});
+}));
 
-gulp.task('endClean', ['copySpriteGraphic', 'copySpriteCSS'], function() {
-  return del('./app/temp/sprite');
-});
+gulp.task('endClean', gulp.series('copySpriteGraphic', gulp.series('copySpriteCSS', function() {
+  return del('./app/temp/sprite')
+})));
 
-gulp.task('icons', ['beginClean', 'createSprite', 'copySpriteGraphic', 'copySpriteCSS', 'endClean']);
+gulp.task('icons', gulp.parallel('beginClean', 'createSprite', 'copySpriteGraphic', 'copySpriteCSS', 'endClean'));
