@@ -1002,7 +1002,9 @@ a {
   }
 
 .site-header__logo__graphic {
-    text-indent: -9999px;
+  font-size: 1.8rem;
+  color: #fff;
+  font-weight: 400;
   }
 
 .site-header__menu-icon {
